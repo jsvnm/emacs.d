@@ -135,7 +135,8 @@
                :depends (hide-comnt thingatpt+)
                :features (thing-cmds)
                :after (lambda nil (global-set-key (kbd "C-M-SPC") 'cycle-thing-region)))
-        (:name pretty-lambdada :type emacswiki :after (lambda nil (pretty-lambda-for-modes)))
+        (:name pretty-lambdada :type emacswiki :features pretty-lambdada
+               :after (lambda nil (pretty-lambda-for-modes)))
         ))
 
 (setq my-el-get-pkgs
