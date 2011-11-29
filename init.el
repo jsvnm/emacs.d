@@ -179,3 +179,5 @@
 (prefer-coding-system        'utf-8)
 
 (load custom-file)
+
+(server-start)
