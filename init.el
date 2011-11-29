@@ -6,8 +6,8 @@
    (mapconcat (lambda (p) (replace-regexp-in-string "^/" "" p)) pathcomponents "/")))
 
 ;; Cedet must be loaded early. Not automagically installed. Must do:
-;; (cd vendor/bzr ; bzr checkout bzr://cedet.bzr.sourceforge.net/bzrroot/cedet/code/trunk cedet)
-(load-file (emacs.d "vendor/bzr/cedet/common/cedet.el"))
+;; (cd ~/.emacs.d ; bzr checkout bzr://cedet.bzr.sourceforge.net/bzrroot/cedet/code/trunk cedet)
+(load-file (emacs.d "cedet/common/cedet.el"))
 
 ;; Set some variables
 (setq-default
@@ -103,8 +103,6 @@
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook             'turn-on-eldoc-mode)
 
-
-
 (cond
  ((eq system-type 'windows-nt) 
     (set-face-attribute 'default nil :family "consolas") ;; "Courier New"
@@ -114,12 +112,12 @@
     (setq mac-command-modifier       'hyper)))
 
 
-
-
 ;; el-get:
 (setq el-get-dir (emacs.d "el-get/"))
 (add-to-list 'load-path (emacs.d "el-get/el-get/"))
 
+;; This seems unreliable. Better to do:
+;; (cd ~/.emacs.d/el-get ; git clone http://github.com/dimitri/el-get.git)
 (unless (require 'el-get nil t)
   (url-retrieve "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
    (lambda (s) (let (el-get-master-branch) (end-of-buffer) (eval-print-last-sexp)))))
@@ -128,7 +126,8 @@
       '((:name smex :after (lambda nil (global-set-key (kbd "M-x") 'smex)))
         (:name frame-cmds :depends frame-fns)
         (:name goto-last-change :after (lambda nil (global-set-key (kbd "C-?") 'goto-last-change)))
-        (:name mic-paren :type emacswiki :features "mic-paren" :after (lambda nil (paren-activate)))
+        (:name mic-paren :type emacswiki :features "mic-paren"
+         :after (lambda nil (paren-activate) (show-paren-mode -1)))
         (:name hide-comnt :type emacswiki)
         (:name thingatpt+ :type emacswiki)
         (:name thing-cmds
@@ -136,6 +135,7 @@
                :depends (hide-comnt thingatpt+)
                :features (thing-cmds)
                :after (lambda nil (global-set-key (kbd "C-M-SPC") 'cycle-thing-region)))
+        (:name pretty-lambdada :type emacswiki :after (lambda nil (pretty-lambda-for-modes)))
         ))
 
 (setq my-el-get-pkgs
@@ -145,7 +145,7 @@
         auto-complete auto-complete-ruby
         egg smex full-ack gist
         frame-fns frame-cmds goto-last-change mic-paren
-        thing-cmds thingatpt+
+        thing-cmds thingatpt+ pretty-lambdada
         ))
 
 (el-get 'sync my-el-get-pkgs)
