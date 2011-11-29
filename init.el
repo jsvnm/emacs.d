@@ -8,6 +8,7 @@
 ;; Cedet must be loaded early. Not automagically installed. Must do:
 ;; (cd ~/.emacs.d ; bzr checkout bzr://cedet.bzr.sourceforge.net/bzrroot/cedet/code/trunk cedet)
 (load-file (emacs.d "cedet/common/cedet.el"))
+(require 'semantic-ia)
 
 ;; Set some variables
 (setq-default
@@ -123,20 +124,21 @@
    (lambda (s) (let (el-get-master-branch) (end-of-buffer) (eval-print-last-sexp)))))
 
 (setq el-get-sources
-      '((:name smex :after (lambda nil (global-set-key (kbd "M-x") 'smex)))
+      '((:name smex
+               :after (lambda () (global-set-key (kbd "M-x") 'smex)))
         (:name frame-cmds :depends frame-fns)
-        (:name goto-last-change :after (lambda nil (global-set-key (kbd "C-?") 'goto-last-change)))
+        (:name goto-last-change
+               :after (lambda () (global-set-key (kbd "C-?") 'goto-last-change)))
         (:name mic-paren :type emacswiki :features "mic-paren"
-         :after (lambda nil (paren-activate) (show-paren-mode -1)))
+               :after (lambda () (paren-activate) (show-paren-mode -1)))
         (:name hide-comnt :type emacswiki)
         (:name thingatpt+ :type emacswiki)
-        (:name thing-cmds
-               :type emacswiki
-               :depends (hide-comnt thingatpt+)
-               :features (thing-cmds)
-               :after (lambda nil (global-set-key (kbd "C-M-SPC") 'cycle-thing-region)))
+        (:name thing-cmds :type emacswiki :depends (hide-comnt thingatpt+) :features (thing-cmds)
+               :after (lambda () (global-set-key (kbd "C-M-SPC") 'cycle-thing-region)))
         (:name pretty-lambdada :type emacswiki :features pretty-lambdada
-               :after (lambda nil (pretty-lambda-for-modes)))
+               :after (lambda () (pretty-lambda-for-modes)))
+        (:name csharp-mode :features nil
+               :post-init (lambda () (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))))
         ))
 
 (setq my-el-get-pkgs
@@ -147,7 +149,7 @@
         egg smex full-ack gist
         frame-fns frame-cmds goto-last-change mic-paren
         thing-cmds thingatpt+ pretty-lambdada
-        markdown-mode
+        markdown-mode csharp-mode
         ))
 
 (el-get 'sync my-el-get-pkgs)
