@@ -1,24 +1,21 @@
-;; -*- mode: emacs-lisp; mode: linkd; coding: utf-8 -*-
-
-(defvar emacs.d "~/emacs.d/" "Path to elisp root")
+(defvar emacs.d (file-name-directory load-file-name) "the emacs.d dir")
 
 (defsubst emacs.d (&rest pathcomponents)
   "Adds PATHCOMPONENTS to `emacs.d', strips leading /."
-  (concat emacs.d 
+  (concat emacs.d
    (mapconcat (lambda (p) (replace-regexp-in-string "^/" "" p)) pathcomponents "/")))
 
-(add-to-list 'exec-path"/usr/local/bin")
-(add-to-list 'exec-path"/usr/local/sbin")
-(add-to-list 'exec-path "/usr/local/bin/gems")
+;; Cedet must be loaded early. Not automagically installed. Must do:
+;; (cd vendor/bzr ; bzr checkout bzr://cedet.bzr.sourceforge.net/bzrroot/cedet/code/trunk cedet)
+(load-file (emacs.d "vendor/bzr/cedet/common/cedet.el"))
 
-(autoload 'inversion-test "inversion" "Test that PACKAGE meets the MINIMUM version requirement.")
-(autoload 'flymake-mode "flymake"  "Minor mode to do on-the-fly syntax checking.")
-
+;; Set some variables
 (setq-default
       indent-tabs-mode             nil
       dired-omit-mode              t)
 
 (setq custom-file                  (emacs.d "custom.el")
+      custom-theme-directory       (emacs.d "themes/")
       org-directory                "~/org"
       inhibit-startup-screen       t
       use-file-dialog              nil
@@ -31,7 +28,7 @@
       size-indication-mode         nil
       transient-mark-mode          t
       visible-bell                 t
-      blink-cursor-delay           5
+      blink-cursor-delay           2
       blink-cursor-interval        0.5
       auto-compression-mode        t
       buffers-menu-max-size        30
@@ -45,11 +42,11 @@
                             (background-color . "black")
                             (background-mode . dark)
                             (border-color . "black")
-                            (cursor-color . "#fab")
+                            (cursor-color . "#efe")
                             (menu-bar-lines . 1)
                             (tool-bar-lines . 0)
                             (vertical-scroll-bars . right)
-                            (cursor-type . box)
+                            (cursor-type . (bar . 3))
                             ))
 
 (set-face-attribute 'default       nil
@@ -58,36 +55,19 @@
                     :inherit        nil :stipple    nil :inverse-video nil :box nil
                     :strike-through nil :overline   nil :underline     nil)
 
-(fset 'yes-or-no-p 'y-or-n-p)           ;; Make yes-or-no answerable with 'y' or 'n'
-(put 'upcase-region    'disabled   nil) ;; Don't disable case-change functions
-(put 'downcase-region  'disabled   nil) ;;
+(fset 'yes-or-no-p 'y-or-n-p)
+(put 'upcase-region    'disabled   nil)
+(put 'downcase-region  'disabled   nil)
 (put 'narrow-to-region 'disabled   nil)
 
 (blink-cursor-mode    1)
-(winner-mode          1) ;; Navigate window layouts with "C-c <left>" and "C-c <right>"
-(size-indication-mode 1) ;; Modeline tweaks
+(winner-mode          1)
 (column-number-mode   1)
-(windmove-default-keybindings 'shift)
 
+(windmove-default-keybindings 'shift)
 (global-set-key (kbd "RET") 'newline-and-indent)
 (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
 
-(require 'edebug)
-
-;; (@* "recentf")
-(require 'recentf)
-(setq recentf-max-saved-items 100
-      history-length          300)
-
-;; (@* "uniquify")      Nicer naming of buffers for files with identical names
-(require 'uniquify)
-(setq uniquify-separator           " • "
-      uniquify-ignore-buffers-re   "^\\*"
-      uniquify-buffer-name-style   'reverse
-      uniquify-after-kill-buffer-p t)
-
-(require 'ido)
-(load (emacs.d "vendor/ido-other-window/ido-other-window"))
 (ido-mode       t)
 (ido-everywhere t)
 (setq ido-enable-flex-matching               t
@@ -96,119 +76,82 @@
       ido-cannot-complete-command 'ido-next-match
       ido-enable-tramp-completion          nil
       ido-enter-matching-directory         nil
-      ido-ignore-directories       '("\\`CVS/"
-                                  "\\`\\.\\./"
-                                     "\\`\\./"
-                                    "\\`.git/")
+      ido-ignore-directories       '("\\`CVS/" "\\`\\.\\./" "\\`\\./" "\\`.git/")
       ido-max-prospects                    123
       ido-max-window-height               0.25
       ido-max-work-file-list                30
       ido-use-filename-at-point         'guess
       ido-use-url-at-point                   t
       ido-decorations  
-      '("\n" "" " " " |..." "|" ""
+      '("\n" "" " " " |..." " " ""
         " [No match]" " [Matched]"
         " [Not readable]" " [Too big]" " [Confirm]"))
 
+(require 'uniquify)
+(setq uniquify-separator           " • "
+      uniquify-ignore-buffers-re   "^\\*"
+      uniquify-buffer-name-style   'reverse
+      uniquify-after-kill-buffer-p t)
 
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(recentf-mode)
+(setq recentf-max-saved-items 100
+      history-length          300)
+
+(show-paren-mode)
+
+(add-hook 'emacs-lisp-mode-hook       'turn-on-eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook             'turn-on-eldoc-mode)
 
-(setq semanticdb-default-save-directory (emacs.d "cache/semanticdb/"))
 
-(defvar flymake-mode nil)
 
+(cond
+ ((eq system-type 'windows-nt) 
+    (set-face-attribute 'default nil :family "consolas") ;; "Courier New"
+    (setq w32-pass-lwindow-to-system nil
+          w32-lwindow-modifier       'hyper))
+ ((eq system-type 'darwin)
+    (setq mac-command-modifier       'hyper)))
+
+
+
+
+;; el-get:
 (setq el-get-dir (emacs.d "el-get/"))
 (add-to-list 'load-path (emacs.d "el-get/el-get/"))
+
 (unless (require 'el-get nil t)
   (url-retrieve "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
    (lambda (s) (let (el-get-master-branch) (end-of-buffer) (eval-print-last-sexp)))))
 
-(el-get-emacswiki-refresh (emacs.d "el-get/recipes/emacswiki"))
+(setq el-get-sources
+      '((:name smex :after (lambda nil (global-set-key (kbd "M-x") 'smex)))
+        (:name frame-cmds :depends frame-fns)
+        (:name goto-last-change :after (lambda nil (global-set-key (kbd "C-?") 'goto-last-change)))
+        (:name mic-paren :type emacswiki :features "mic-paren" :after (lambda nil (paren-activate)))
+        (:name hide-comnt :type emacswiki)
+        (:name thingatpt+ :type emacswiki)
+        (:name thing-cmds
+               :type emacswiki
+               :depends (hide-comnt thingatpt+)
+               :features (thing-cmds)
+               :after (lambda nil (global-set-key (kbd "C-M-SPC") 'cycle-thing-region)))
+        ))
 
-(setq my:el-get-packages
- '(el-get auto-complete auto-complete-ruby auto-complete-yasnippet ac-dabbrev ac-slime ack
-   anything autopair buffer-move cedet cmake-mode color-theme csharp-mode diminish dired+
-   dired-details dired-details+ dired-single dired-view egg eol-conversion flymake-ruby
-   frame-fns frame-cmds full-ack gist goto-last-change growl haml-mode highlight-parentheses
-   htmlize inf-ruby js2-mode json levenshtein org-mode package paredit pos-tip psvn
-   rainbow-delimiters regex-tool revive rspec-mode rinari ruby-mode ruby-block
-   ruby-compilation ruby-end sass-mode scss-mode session smart-tab smex yari linkd ffap-
-   cus-edit+ wid-edit+ display-buffer-for-wide-screen pp+ hide-comnt thingatpt+ thing-cmds
-   help+ help-fns+ help-mode+ apropos+ apropos-fn+var misc-cmds color-moccur
-   color-theme-ir-black mic-paren))
+(setq my-el-get-pkgs
+      '(el-get
+        ruby-mode inf-ruby ruby-compilation rspec-mode flymake-ruby
+        css-mode haml-mode sass-mode js2-mode
+        auto-complete auto-complete-ruby
+        egg smex full-ack gist
+        frame-fns frame-cmds goto-last-change mic-paren
+        thing-cmds thingatpt+
+        ))
 
-
-
-;;   yasnippet
-;;   slime
-;;   magit
-;;   magithub
-;;   ansi-color
-;;   bookmark+
-;;   haskell-mode haskell-mode-exts hs-mode
-
-
-;;(el-get 'sync my:el-get-packages)
-(el-get nil  my:el-get-packages)
-
-(global-set-key (kbd "M-x") 'smex)
-
-(require 'rainbow-delimiters)
-(rainbow-delimiters-mode 1)
-(paren-activate)
-
-(require 'ffap-)
-(require 'dired-view)
-(require 'dired-details+)
-;; (require 'wid-edit+)
-;; (require 'cus-edit+)
-(require 'linkd)
-;; (require 'display-buffer-for-wide-screen)
-;; (require 'pp+)
-;; (require 'frame-cmds)
-;; (require 'shell-command)
-;; (require 'goto-last-change)
-;; (require 'thing-cmds)
-;; (require 'thingatpt+)
-;; ;;(require 'mouse+)
-;; ;;(require 'faces+)
-;; (require 'imenu+)
-;; (require 'ring+)
-;; (require 'info+)
-(require 'help+)
-(require 'help-fns+)
-(require 'help-mode+)
-;; (require 'misc-cmds)
-;; (require 'outline)
-;; (require 'yaoddmuse)
-;; (require 'doremi)
-;; (require 'doremi-cmd)
-;; (require 'doremi-frm)
-;; (require 'color-moccur)
-;; ;;(require 'less)
-;; ;;(require 'dropdown-list)
-;; ;;(require 'bookmark+)
-
-;; (@* "Session")                Restore histories and registers after saving
-(require 'session)
-(setq session-save-file       (emacs.d "cache/session.el"))
-;; (setq session-globals-include (uniq `(,@session-globals-include
-;;                                       eproject-attributes-alist
-;;                                        anything-magic-sources)))
-(add-hook 'after-init-hook 'session-initialize)
+(el-get 'sync my-el-get-pkgs)
 
 
 
-;(unless (eq window-system 'w32) (require 'notify))
-;; (require 'eproject)
-;; (require 'eproject-extras)
-;(require 'eol-conversion)
-;(require 'all)
-
-
-;; (@* "utf-8 everywhere")
 (setq locale-coding-system   'utf-8)
 (set-language-environment    'utf-8)
 (set-default-coding-systems  'utf-8)
@@ -216,7 +159,4 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system        'utf-8)
 
-(server-start)
-(require 'color-theme-ir-black)
-(color-theme-ir-black)
-(maximize-frame)
+(load custom-file)
