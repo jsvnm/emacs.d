@@ -9,6 +9,14 @@
 ;; (cd ~/.emacs.d ; bzr checkout bzr://cedet.bzr.sourceforge.net/bzrroot/cedet/code/trunk cedet)
 (load-file (emacs.d "cedet/common/cedet.el"))
 (require 'semantic-ia)
+(require 'eassist)
+(semantic-load-enable-gaudy-code-helpers)
+(global-semantic-stickyfunc-mode -1)
+(global-semantic-highlight-func-mode 1)
+(global-semantic-idle-local-symbol-highlight-mode 1)
+(semantic-toggle-decoration-style "semantic-decoration-on-private-members" t)
+(semantic-toggle-decoration-style "semantic-decoration-on-protected-members" t)
+
 
 ;; Set some variables
 (setq-default
@@ -67,6 +75,7 @@
 
 (windmove-default-keybindings 'shift)
 (global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-x u") 'revert-buffer)
 (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
 
 (ido-mode       t)
@@ -98,6 +107,7 @@
 (setq recentf-max-saved-items 100
       history-length          300)
 
+(flymake-mode)
 (show-paren-mode)
 
 (add-hook 'emacs-lisp-mode-hook       'turn-on-eldoc-mode)
@@ -112,6 +122,8 @@
  ((eq system-type 'darwin)
     (setq mac-command-modifier       'hyper)))
 
+(define-globalized-minor-mode global-goto-address-mode goto-address-mode goto-address-mode)
+(global-goto-address-mode)
 
 ;; el-get:
 (setq el-get-dir (emacs.d "el-get/"))
@@ -138,22 +150,25 @@
         (:name pretty-lambdada :type emacswiki :features pretty-lambdada
                :after (lambda () (pretty-lambda-for-modes)))
         (:name csharp-mode :features nil
-               :post-init (lambda () (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))))
+               :post-init (lambda () (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode)))
+               :after (lambda () (require 'wisent-csharp)))
+        (:name yasnippet-bundle :type elpa)
         ))
 
 (setq my-el-get-pkgs
-      '(el-get
+      `(el-get
         ruby-mode inf-ruby ruby-compilation rspec-mode flymake-ruby
         css-mode haml-mode sass-mode js2-mode
         auto-complete auto-complete-ruby
         egg smex full-ack gist
         frame-fns frame-cmds goto-last-change mic-paren
         thing-cmds thingatpt+ pretty-lambdada
-        markdown-mode csharp-mode
-        ))
+        markdown-mode
+        ,@(case system-type
+            ('windows-nt '(csharp-mode yasnippet-bundle))
+            ('darwin     '(yasnippet)))))
 
 (el-get 'sync my-el-get-pkgs)
-
 
 
 (setq locale-coding-system   'utf-8)
