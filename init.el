@@ -147,6 +147,7 @@
         egg smex full-ack gist
         frame-fns frame-cmds goto-last-change mic-paren
         thing-cmds thingatpt+ pretty-lambdada
+        markdown-mode
         ))
 
 (el-get 'sync my-el-get-pkgs)
