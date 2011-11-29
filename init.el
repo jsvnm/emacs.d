@@ -74,9 +74,17 @@
 (column-number-mode   1)
 
 (windmove-default-keybindings 'shift)
-(global-set-key (kbd "RET") 'newline-and-indent)
-(global-set-key (kbd "C-x u") 'revert-buffer)
-(define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
+
+(defun kill-this-buffer ()
+  "Kill the current buffer without asking anything."
+  (interactive)
+  (kill-buffer nil))
+
+(define-key global-map                  (kbd "RET")        'newline-and-indent)
+(define-key global-map                  (kbd "C-x u")      'revert-buffer)
+(define-key global-map                  (kbd "H-/")        'hippie-expand)
+(define-key global-map                  (kbd "H-k")        'kill-this-buffer)
+(define-key read-expression-map         (kbd "TAB")        'lisp-complete-symbol)
 
 (ido-mode       t)
 (ido-everywhere t)
