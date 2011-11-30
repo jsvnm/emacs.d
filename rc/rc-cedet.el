@@ -1,0 +1,10 @@
+(require 'semantic-ia)
+(require 'eassist)
+(semantic-load-enable-gaudy-code-helpers)
+(global-semantic-stickyfunc-mode -1)
+(global-semantic-highlight-func-mode 1)
+(global-semantic-idle-local-symbol-highlight-mode 1)
+(semantic-toggle-decoration-style "semantic-decoration-on-private-members" t)
+(semantic-toggle-decoration-style "semantic-decoration-on-protected-members" t)
+
+(provide 'rc-cedet)
