@@ -170,7 +170,8 @@
         auto-complete auto-complete-ruby
         egg smex full-ack gist
         frame-fns frame-cmds goto-last-change mic-paren
-        thing-cmds thingatpt+ pretty-lambdada
+        ;;thing-cmds thingatpt+
+        pretty-lambdada
         markdown-mode
         ,@(case system-type
             ('windows-nt '(csharp-mode yasnippet-bundle))
