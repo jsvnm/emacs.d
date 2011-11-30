@@ -29,3 +29,9 @@
                  (sort (face-list) #'string-lessp)))))
     (unless faces (error "No faces matching \"%s\"" regexp))
     (mapcar 'custom-theme-add-face faces)))
+
+(defun jsvnm/custom-toggle-all-theme-faces ()
+  (interactive)
+  (dolist (face custom-theme-faces)
+        (widget-apply-action (nth 1 (widget-get (nth 2 face) :buttons)))
+        ))  
