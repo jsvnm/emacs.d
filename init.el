@@ -164,6 +164,7 @@
                :after (lambda () (require 'wisent-csharp)))
         (:name yasnippet-bundle :type elpa)
         (:name color-theme-solarized :depends nil)
+        (:name help-fns+ :type emacswiki :features help-fns+)
         ))
 
 (setq my-el-get-pkgs
@@ -177,6 +178,7 @@
         pretty-lambdada
         markdown-mode
         color-theme-solarized
+        help-fns+
         ,@(case system-type
             ('windows-nt '(csharp-mode yasnippet-bundle))
             ('darwin     '(yasnippet)))))
