@@ -115,6 +115,7 @@
 (setq recentf-max-saved-items 100
       history-length          300)
 
+(electric-pair-mode 1)
 (flymake-mode)
 (show-paren-mode)
 
