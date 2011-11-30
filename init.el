@@ -163,6 +163,7 @@
                :post-init (lambda () (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode)))
                :after (lambda () (require 'wisent-csharp)))
         (:name yasnippet-bundle :type elpa)
+        (:name color-theme-solarized :depends nil)
         ))
 
 (setq my-el-get-pkgs
@@ -175,6 +176,7 @@
         ;;thing-cmds thingatpt+
         pretty-lambdada
         markdown-mode
+        color-theme-solarized
         ,@(case system-type
             ('windows-nt '(csharp-mode yasnippet-bundle))
             ('darwin     '(yasnippet)))))
