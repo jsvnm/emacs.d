@@ -122,6 +122,7 @@
 (add-hook 'emacs-lisp-mode-hook       'turn-on-eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook             'turn-on-eldoc-mode)
+(add-hook 'after-save-hook            'executable-make-buffer-file-executable-if-script-p)
 
 (cond
  ((eq system-type 'windows-nt) 
