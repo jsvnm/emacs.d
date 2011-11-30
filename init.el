@@ -58,12 +58,6 @@
                             (cursor-type . (bar . 3))
                             ))
 
-(set-face-attribute 'default       nil
-                    :background "black" :foreground "white"
-                    :height         100 :slant  'normal :weight    'normal :width 'normal
-                    :inherit        nil :stipple    nil :inverse-video nil :box nil
-                    :strike-through nil :overline   nil :underline     nil)
-
 (fset 'yes-or-no-p 'y-or-n-p)
 (put 'upcase-region    'disabled   nil)
 (put 'downcase-region  'disabled   nil)
