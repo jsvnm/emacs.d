@@ -21,3 +21,11 @@
         (princ " tags found .\n"))
       (setq args (cdr args))))
   (semanticdb-save-all-db))
+
+(defun jsvnm/add-faces-to-theme (regexp)
+  (interactive (list (read-regexp "List faces matching regexp")))
+  (let ((faces (delq nil (mapcar
+                 (lambda (f) (when (string-match regexp (symbol-name f)) f))
+                 (sort (face-list) #'string-lessp)))))
+    (unless faces (error "No faces matching \"%s\"" regexp))
+    (mapcar 'custom-theme-add-face faces)))
