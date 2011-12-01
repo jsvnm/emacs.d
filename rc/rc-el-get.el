@@ -28,6 +28,9 @@
         (:name yasnippet-bundle :type elpa)
         (:name color-theme-solarized :depends nil)
         (:name help-fns+ :type emacswiki :features help-fns+)
+        (:name el-get :url "https://github.com/jsvnm/el-get.git" :branch "master")
+        (:name inf-ruby :url "https://github.com/nonsequitur/inf-ruby.git" :branch "master" :type git)
+        (:name ruby-mode :url "https://github.com/jacott/Enhanced-Ruby-Mode.git" :branch "master" :type git)
         ))
 
 (setq my-el-get-pkgs
