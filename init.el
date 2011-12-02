@@ -11,7 +11,7 @@
              w32-lwindow-modifier       'hyper))
       ((eq system-type 'darwin)
        (add-to-list 'exec-path "/usr/local/bin")
-       (add-to-list 'exec-path "/usr/local/bin/gembinlinks")
+       (add-to-list 'exec-path "/usr/local/bin/gems")
        (setq mac-command-modifier       'hyper)))
 
 ;; Cedet must be loaded early. Not automagically installed. Must do:
