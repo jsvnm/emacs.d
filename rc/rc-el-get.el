@@ -31,24 +31,19 @@
         (:name el-get    :branch "master" :url "https://github.com/jsvnm/el-get.git")
         (:name inf-ruby  :branch "master" :url "https://github.com/nonsequitur/inf-ruby.git" :type git)
         (:name ruby-mode :branch "master" :url "https://github.com/jacott/Enhanced-Ruby-Mode.git" :type git)
-        ))
-
-(setq my-el-get-pkgs
-      `(el-get
-        ruby-mode inf-ruby ruby-compilation rspec-mode flymake-ruby
-        css-mode haml-mode sass-mode js2-mode
-        auto-complete auto-complete-ruby
-        egg smex full-ack gist
-        frame-fns frame-cmds goto-last-change mic-paren
-        ;;thing-cmds thingatpt+
-        pretty-lambdada
-        markdown-mode
-        color-theme-solarized
-        help-fns+
         ,@(case system-type
             ('windows-nt '(csharp-mode yasnippet-bundle))
-            ('darwin     '(yasnippet)))))
+            ('darwin     '(yasnippet)))
+        el-get           full-ack            gist              
+        rspec-mode       flymake-ruby        rinari            
+        css-mode         haml-mode           sass-mode         
+        auto-complete    auto-complete-ruby  smex              
+        frame-fns        frame-cmds          goto-last-change  
+        pretty-lambdada  mic-paren           egg               
+        js2-mode         markdown-mode       
+        ;;thing-cmds thingatpt+
+        ))
 
-(el-get 'sync my-el-get-pkgs)
+(el-get 'sync)
 
 (provide 'rc-el-get)
