@@ -1,12 +1,18 @@
-;; el-get:
 (setq el-get-dir (emacs.d "el-get/"))
-(add-to-list 'load-path (emacs.d "el-get/el-get/"))
 
-;; This seems unreliable. Better to do:
-;; (cd ~/.emacs.d/el-get ; git clone http://github.com/dimitri/el-get.git)
-(unless (require 'el-get nil t)
-  (url-retrieve "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
-   (lambda (s) (let (el-get-master-branch) (end-of-buffer) (eval-print-last-sexp)))))
+(setq my-el-get-install-list
+      `(full-ack         gist                markdown-mode
+        rspec-mode       flymake-ruby        rinari            
+        css-mode         haml-mode           sass-mode         
+        auto-complete    auto-complete-ruby  smex              
+        frame-fns        frame-cmds          goto-last-change  
+        pretty-lambdada  mic-paren           egg               
+        js2-mode
+        ,@(case system-type
+            ('windows-nt 
+             '(Powershell csharp-mode yasnippet-bundle))
+            ('darwin     
+             '(yasnippet)))))
 
 (setq el-get-sources
       `((:name smex
@@ -25,30 +31,20 @@
         (:name csharp-mode :features nil
                :post-init (lambda () (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode)))
                :after (lambda () (require 'wisent-csharp)))
+        (:name Powershell :type emacswiki :features powershell)
         (:name yasnippet-bundle :type elpa)
         (:name color-theme-solarized :depends nil)
         (:name help-fns+ :type emacswiki :features help-fns+)
         (:name el-get    :branch "master" :url "https://github.com/jsvnm/el-get.git")
         (:name inf-ruby  :branch "master" :url "https://github.com/nonsequitur/inf-ruby.git" :type git)
         (:name ruby-mode :branch "master" :url "https://github.com/jacott/Enhanced-Ruby-Mode.git" :type git)
-        ,@(case system-type
-            ('windows-nt 
-             '((:name Powershell :type emacswiki :features powershell)
-               csharp-mode yasnippet-bundle)
-             )
-            ('darwin     
-             '(yasnippet)
-             ))
-        el-get           full-ack            gist              
-        rspec-mode       flymake-ruby        rinari            
-        css-mode         haml-mode           sass-mode         
-        auto-complete    auto-complete-ruby  smex              
-        frame-fns        frame-cmds          goto-last-change  
-        pretty-lambdada  mic-paren           egg               
-        js2-mode         markdown-mode       
-        ;;thing-cmds thingatpt+
         ))
 
-(el-get 'sync)
+(add-to-list 'load-path (concat el-get-dir "/el-get/"))
+(unless (require 'el-get nil t)
+  (url-retrieve "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
+   (lambda (s) (let (el-get-master-branch) (end-of-buffer) (eval-print-last-sexp)))))
+
+(el-get 'sync my-el-get-install-list)
 
 (provide 'rc-el-get)
