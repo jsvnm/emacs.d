@@ -35,3 +35,19 @@
   (dolist (face custom-theme-faces)
         (widget-apply-action (nth 1 (widget-get (nth 2 face) :buttons)))
         ))  
+
+;; TODO: make async, lose the headers
+(defun jsvnm/find-url-contents (url)
+  (interactive "sURL:")
+  (unless (url-p url) (setq url (url-generic-parse-url url)))
+  (switch-to-buffer (url-retrieve-synchronously url))
+  (let ((buffer-file-name (url-filename url)))
+    (setq buffer-name (url-recreate-url url))
+    (set-auto-mode)))
+
+
+;; TODO: rewrite select from old stuff
+(defun jsvnm/el-get-update-all-of-type (type)
+  (let* ((installed (el-get-list-package-names-with-status "installed"))
+         (all (select (pkg installed) (el-get-rec)))
+
