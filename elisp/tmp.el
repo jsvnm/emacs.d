@@ -36,19 +36,25 @@
         (widget-apply-action (nth 1 (widget-get (nth 2 face) :buttons)))
         ))  
 
-;; TODO: make load in background. is broken now
-(defun jsvnm/find-url-contents (url)
-  (interactive "sURL:")
+
+(defun jsvnm/find-url-contents (url &optional keep-headers)
+  "Fetch contents of URL, no headers unless KEEP-HEADERS is t.
+Use `set-auto-mode' on the buffer, with `buffer-file-name'
+temporarily set to the original name. Show buffer when done."
+  (interactive "sURL:\nP")
   (require 'url)
   (unless (url-p url) (setq url (url-generic-parse-url url)))
   (lexical-let ((file (url-filename url))
-                (name (url-recreate-url url)) buff)
-    (setq buff
-          (url-retrieve url
-                        (lambda (&rest ignored)
-                          (let ((buffer-file-name file)) (set-auto-mode))
-                          (setq buffer-name name)
-                          (switch-to-buffer buff))))))
+                (name (url-recreate-url url))
+                (keep-headers keep-headers))
+    (url-retrieve url
+                  (lambda (&rest ignored)
+                    (let ((buffer-file-name file)) (set-auto-mode))
+                    (setq buffer-name name)
+                    (unless keep-headers
+                      (goto-char (point-min))
+                      (delete-region (point-min) (search-forward "\n\n")))
+                    (switch-to-buffer (current-buffer))))))
 
 
 ;; TODO: rewrite select from old stuff
