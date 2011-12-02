@@ -9,7 +9,7 @@
    (lambda (s) (let (el-get-master-branch) (end-of-buffer) (eval-print-last-sexp)))))
 
 (setq el-get-sources
-      '((:name smex
+      `((:name smex
                :after (lambda () (global-set-key (kbd "M-x") 'smex)))
         (:name frame-cmds :depends frame-fns)
         (:name goto-last-change
@@ -32,8 +32,13 @@
         (:name inf-ruby  :branch "master" :url "https://github.com/nonsequitur/inf-ruby.git" :type git)
         (:name ruby-mode :branch "master" :url "https://github.com/jacott/Enhanced-Ruby-Mode.git" :type git)
         ,@(case system-type
-            ('windows-nt '(csharp-mode yasnippet-bundle))
-            ('darwin     '(yasnippet)))
+            ('windows-nt 
+             '((:name Powershell :type emacswiki :features powershell)
+               csharp-mode yasnippet-bundle)
+             )
+            ('darwin     
+             '(yasnippet)
+             ))
         el-get           full-ack            gist              
         rspec-mode       flymake-ruby        rinari            
         css-mode         haml-mode           sass-mode         
