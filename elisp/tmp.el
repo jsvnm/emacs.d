@@ -36,14 +36,19 @@
         (widget-apply-action (nth 1 (widget-get (nth 2 face) :buttons)))
         ))  
 
-;; TODO: make async, lose the headers
+;; TODO: make load in background. is broken now
 (defun jsvnm/find-url-contents (url)
   (interactive "sURL:")
+  (require 'url)
   (unless (url-p url) (setq url (url-generic-parse-url url)))
-  (switch-to-buffer (url-retrieve-synchronously url))
-  (let ((buffer-file-name (url-filename url)))
-    (setq buffer-name (url-recreate-url url))
-    (set-auto-mode)))
+  (lexical-let ((file (url-filename url))
+                (name (url-recreate-url url)) buff)
+    (setq buff
+          (url-retrieve url
+                        (lambda (&rest ignored)
+                          (let ((buffer-file-name file)) (set-auto-mode))
+                          (setq buffer-name name)
+                          (switch-to-buffer buff))))))
 
 
 ;; TODO: rewrite select from old stuff
