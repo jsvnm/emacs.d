@@ -163,9 +163,9 @@ If regexp, then that regexp must match the sexp. Any subexps
 it matches are added."
   (or-set args '(t))
   (and (integerp args)
-       (let (n args)
+       (let ((count args))
          (setq args ())
-         (dotimes (nil n) (push t args))))
+         (dotimes (not-used count) (push t args))))
   (or (listp args) (setq args (list args)))
   (let ((start (point))
         aa a b md)
