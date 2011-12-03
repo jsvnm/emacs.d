@@ -37,7 +37,7 @@
   (or-set face (symbolify (the-completing-read
                "Face: " obarray 'facep t (stringify (face-at-point)))))
   (or-set attributes (read (concat "("  (read-string
-          "" (chomp (apply 'concat (mapfilter
+          "" (strip (apply 'concat (mapfilter
                                     (lambda (kv) (let ((k (car kv))
                                                   (v (cdr kv)))
                                               (and (not (eq 'unspecified v))
@@ -51,7 +51,7 @@
   (interactive "SVariable: ")
   (let ((sym (symbolify var)))
     (set sym (eval-minibuffer (format "Set %s:\n" var)
-              (chomp (pp-to-string (custom-quote (symbol-value sym))))))))
+              (strip (pp-to-string (custom-quote (symbol-value sym))))))))
 
 ;;;###autoload
 (defun set-variable-at-point ()
