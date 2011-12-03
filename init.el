@@ -22,6 +22,7 @@
 (add-to-list 'load-path (emacs.d "rc"))    ;; for parts of init
 (add-to-list 'load-path (emacs.d "elisp")) ;; for other elisp
 
+(load (emacs.d "elisp/loaddefs.el"))
 (require 'rc-base)
 (require 'rc-el-get)
 (require 'rc-ido)
