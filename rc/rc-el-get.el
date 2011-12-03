@@ -2,12 +2,12 @@
 
 (setq my-el-get-install-list
       `(full-ack         gist                markdown-mode
+        js2-mode         mmm-mode            ruby-mode
         rspec-mode       flymake-ruby        rinari            
         css-mode         haml-mode           sass-mode         
         auto-complete    auto-complete-ruby  smex              
         frame-fns        frame-cmds          goto-last-change  
         pretty-lambdada  mic-paren           egg               
-        js2-mode
         ,@(case system-type
             ('windows-nt 
              '(Powershell csharp-mode yasnippet-bundle))
@@ -45,6 +45,18 @@
   (url-retrieve "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
    (lambda (s) (let (el-get-master-branch) (end-of-buffer) (eval-print-last-sexp)))))
 
-(el-get 'sync my-el-get-install-list)
+
+(message "installed/required, but not in my-el-get-install-list:")
+(mapc (lambda (x) (message "%-42s %s" (car x) (cdr x)))
+      (el-get-extra-packages my-el-get-install-list))
+(el-get 'wait)
+
+(let* ((done (mapcar 'car (el-get-package-types-alist "installed")))
+       (todo (remove-if (lambda (x) (memq x done)) my-el-get-install-list)))
+  (when todo
+    (message "Will now install these: %s" (mapconcat 'symbol-name todo ", "))
+    (el-get 'wait my-el-get-install-list)))
+  
+
 
 (provide 'rc-el-get)
