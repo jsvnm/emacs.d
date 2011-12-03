@@ -280,9 +280,9 @@ returns the corresponding second item."
        (save-excursion
          (with-current-buffer buf
            (goto-char (window-start win))
-           (next-line (if header-line-format
-                          (1- (cdr cwin))
-                        (cdr cwin)))
+           (forward-line (if header-line-format
+                             (1- (cdr cwin))
+                           (cdr cwin)))
            (move-to-column (round (car cwin)))
            ,@body)))))
 
@@ -299,7 +299,7 @@ returns the corresponding second item."
 (defun thing-at-mouse-with-bounds (&optional thing)
   (with-point-at-mouse (thing-at-point-with-bounds thing)))
 
-;;(global-set-key (kbd "H-m") (lambda () (interactive) (message "%S" (thing-at-mouse))))
+;;(global-set-key (kbd "H-m") (lambda () (interactive) (message "%S" (thing-at-mouse 'symbol))))
 
 ;;;###autoload
 (defun exec-path-search (regexp)
