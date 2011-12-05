@@ -19,6 +19,7 @@
       visible-bell                 t
       blink-cursor-delay           2
       blink-cursor-interval        0.5
+      blink-cursor-alist           '((hbar . box))
       auto-compression-mode        t
       buffers-menu-max-size        30
       case-fold-search             t
@@ -31,7 +32,7 @@
                             (menu-bar-lines . 1)
                             (tool-bar-lines . 0)
                             (vertical-scroll-bars . right)
-                            (cursor-type . (bar . 3))
+                            (cursor-type . hbar)
                             ))
 
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -44,6 +45,8 @@
 (column-number-mode   1)
 (electric-pair-mode 1)
 (show-paren-mode)
+
+(require 'dired-x)
 
 (require 'uniquify)
 (setq uniquify-separator           " • "
