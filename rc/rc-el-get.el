@@ -33,11 +33,17 @@
                :after (lambda () (require 'wisent-csharp)))
         (:name Powershell :type emacswiki :features powershell)
         (:name yasnippet-bundle :type elpa)
+        (:name yasnippet :after 'yas/reload-all)
         (:name color-theme-solarized :depends nil)
         (:name help-fns+ :type emacswiki :features help-fns+)
         (:name el-get    :branch "master" :url "https://github.com/jsvnm/el-get.git")
         (:name inf-ruby  :branch "master" :url "https://github.com/nonsequitur/inf-ruby.git" :type git)
         (:name ruby-mode :branch "master" :url "https://github.com/jacott/Enhanced-Ruby-Mode.git" :type git)
+        (:name session   :branch "master" :url "https://github.com/jwiegley/session.git" :type git
+               :load-path ("lisp") :autoloads nil :features session
+               :after (lambda ()
+                        (message "after session")
+                        ))
         ))
 
 (add-to-list 'load-path (concat el-get-dir "/el-get/"))
