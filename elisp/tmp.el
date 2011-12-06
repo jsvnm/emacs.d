@@ -35,3 +35,18 @@ temporarily set to the original name. Show buffer when done."
                       (delete-region (point-min) (search-forward "\n\n")))
                     (switch-to-buffer (current-buffer))))))
 
+
+
+(defun jsvnm/url-xml (url &optional meth headers data)
+  (let* ((url-request-method        (or (when meth (upcase (stringify meth)))
+                                        (if data
+                                            "POST"
+                                          "GET")))
+         (url-mime-accept-string    "application/xml")
+         (url-request-extra-headers `(("Content-Type" . "application/xml") ,@headers))
+         (url-request-data          data)
+         (url                       (url-generic-parse-url url))
+         (buff                      (url-retrieve-synchronously url)))
+    (pop-to-buffer buff)))
+
+;; X-Redmine-API-Key
