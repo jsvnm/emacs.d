@@ -1,2 +1,6 @@
-tramp
 cache/
+eshell/
+el-get/
+cedet/
+org-mode/
+*.elc

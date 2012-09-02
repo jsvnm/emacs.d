@@ -1,0 +1,4 @@
+(:name org-link-minor-mode
+       :description "Enable org-mode bracket links in non-org modes"
+       :type github
+			 :pkgname "seanohalpin/org-link-minor-mode")
