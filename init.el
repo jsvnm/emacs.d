@@ -52,8 +52,6 @@
 (put 'downcase-region  'disabled   nil)
 (put 'narrow-to-region 'disabled   nil)
 
-(load-file (emacs.d "cedet/cedet-devel-load.el")) ;; Must be early in init
-(add-to-list 'load-path (emacs.d "cedet/contrib/"))
 
 (tool-bar-mode        0)
 (scroll-bar-mode      0)
@@ -79,19 +77,6 @@
       ((eq system-type 'darwin)
        (add-to-list 'exec-path "/usr/local/bin")
        (add-to-list 'exec-path "/usr/local/bin/gems")))
-
-
-;;(directory-files (concat emacs.d "eval-after") nil "^[^#]+\.el$")
-
-;; See doc-string of `semantic-default-submodes' for other things you can use here.
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
-(add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
-(add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
-(add-to-list 'semantic-new-buffer-setup-functions '(ruby-mode . wisent-ruby-default-setup))
-(add-to-list 'semantic-new-buffer-setup-functions '(csharp-mode . wisent-csharp-default-setup))
-
-(semantic-mode 1)
-(global-ede-mode 1)
 
 (setq ido-everywhere t)
 (setq ido-max-directory-size 100000)
@@ -155,14 +140,19 @@
 						(format "description of variable %s\n\\{%s}" kmap kmap)))
 		(help-make-xrefs (help-buffer))))
 
+
+(let ((lib (emacs.d "cedet/cedet-devel-load.el")))
+	(if (file-exists-p lib)
+			(load-file lib)))
+
 (setq my-package-list
 			'(el-get egg smex popup anything 
 				auto-complete auto-complete-emacs-lisp
-				;;auto-complete-ruby ; depends on rcodetools
 				flymake-ruby emacs-pry
 				cmake-mode csharp-mode
 				haskell-mode haskell-mode-exts 
 				org-mode org-link-minor-mode))
+(unless (featurep 'cedet) (add-to-list 'my-package-list '(cedet)))
 
 (setq el-get-user-package-directory (emacs.d "el-get-init"))
 (add-to-list 'load-path (emacs.d "el-get/el-get"))
