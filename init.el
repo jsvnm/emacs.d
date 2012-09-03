@@ -76,8 +76,8 @@
 ;; load&init cedet if found in ~/.emacs.d/cedet, otherwise let el-get try
 (let ((lib (emacs.d "cedet/cedet-devel-load.el")))
 	(or (and (file-exists-p     lib)
-					 (load-load-library lib)
-					 (load-load-library (emacs.d "el-get-init/init-cedet.el")))
+					 (load-library lib)
+					 (load-library (emacs.d "el-get-init/init-cedet.el")))
 			(add-to-list 'my-package-list 'cedet)))
 
 ;; require or install el-get
