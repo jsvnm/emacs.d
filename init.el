@@ -4,6 +4,14 @@
   (concat emacs.d
 	  (mapconcat (lambda (p) (replace-regexp-in-string "^/" "" p)) pathcomponents "/")))
 
+(setq my-package-list
+			'(el-get egg smex popup anything 
+				auto-complete auto-complete-emacs-lisp
+				flymake-ruby emacs-pry
+				cmake-mode csharp-mode
+				haskell-mode haskell-mode-exts 
+				org-mode org-link-minor-mode))
+
 (setq-default
       tab-width                    2
       indent-tabs-mode             t
@@ -61,8 +69,28 @@
 (electric-pair-mode   0)
 (show-paren-mode      1)
 
-(require 'dired-x)
+;; load&init cedet if found in ~/.emacs.d/cedet, otherwise let el-get try
+(let ((lib (emacs.d "cedet/cedet-devel-load.el")))
+	(or (and (file-exists-p lib)
+					 (load-file     lib)
+					 (load-file (emacs.d "el-get-init/init-cedet.el")))
+			(add-to-list 'my-package-list '(cedet))))
 
+;; require or install el-get
+(setq el-get-user-package-directory (emacs.d "el-get-init"))
+(add-to-list 'load-path (emacs.d "el-get/el-get"))
+(eval-after-load 'el-get-recipes
+	'(add-to-list 'el-get-recipe-path (emacs.d "el-get-recipes")))
+(unless (require 'el-get nil t)
+  (url-retrieve "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
+   (lambda (s) (let (el-get-master-branch)
+    (goto-char (point-max)) (eval-print-last-sexp)))))
+
+;; install/init everything 
+(el-get 'sync my-package-list)
+
+
+(require 'dired-x)
 (require 'uniquify)
 (setq uniquify-separator           " • "
       uniquify-ignore-buffers-re   "^\\*"
@@ -139,31 +167,6 @@
 		(princ (substitute-command-keys
 						(format "description of variable %s\n\\{%s}" kmap kmap)))
 		(help-make-xrefs (help-buffer))))
-
-
-(let ((lib (emacs.d "cedet/cedet-devel-load.el")))
-	(if (file-exists-p lib)
-			(load-file lib)))
-
-(setq my-package-list
-			'(el-get egg smex popup anything 
-				auto-complete auto-complete-emacs-lisp
-				flymake-ruby emacs-pry
-				cmake-mode csharp-mode
-				haskell-mode haskell-mode-exts 
-				org-mode org-link-minor-mode))
-(unless (featurep 'cedet) (add-to-list 'my-package-list '(cedet)))
-
-(setq el-get-user-package-directory (emacs.d "el-get-init"))
-(add-to-list 'load-path (emacs.d "el-get/el-get"))
-(eval-after-load 'el-get-recipes
-	'(add-to-list 'el-get-recipe-path (emacs.d "el-get-recipes")))
-(unless (require 'el-get nil t)
-  (url-retrieve "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
-   (lambda (s) (let (el-get-master-branch)
-    (goto-char (point-max)) (eval-print-last-sexp)))))
-
-(el-get 'sync my-package-list)
 
 (load custom-file)
 (server-start)
