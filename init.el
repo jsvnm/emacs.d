@@ -109,12 +109,6 @@
 
 (define-key global-map                  (kbd "RET")        'newline-and-indent)
 (define-key global-map                  (kbd "C-x u")      'revert-buffer)
-(define-key global-map                  (kbd "H-z")        'undo)
-(define-key global-map                  (kbd "H-Z")        'redo)
-(define-key global-map                  (kbd "H-x")        'kill-region)
-(define-key global-map                  (kbd "H-c")        'ns-copy-including-secondary)
-(define-key global-map                  (kbd "H-v")        'yank)
-(define-key global-map                  (kbd "H-V")        'ns-paste-secondary)
 (define-key global-map                  (kbd "H-k")        'bury-buffer)
 (define-key global-map                  (kbd "H-K")        'kill-this-buffer)
 (define-key global-map                  (kbd "H-w")        'delete-window)
@@ -125,6 +119,18 @@
 
 (define-key read-expression-map         (kbd "TAB")        'lisp-complete-symbol)
 (define-key emacs-lisp-mode-map         (kbd "H-h")        'jsvnm/popup-help-for-symbol)
+
+(cond ((eq window-system 'w32)
+			     (global-set-key              (kbd "C-z")        'undo))
+			((eq window-system 'ns)
+			     (define-key global-map       (kbd "H-z")        'undo)
+					 (define-key global-map       (kbd "H-Z")        'redo)
+					 (define-key global-map       (kbd "H-x")        'kill-region)
+					 (define-key global-map       (kbd "H-c")        'ns-copy-including-secondary)
+					 (define-key global-map       (kbd "H-v")        'yank)
+					 (define-key global-map       (kbd "H-V")        'ns-paste-secondary))
+			(window-system
+			     (global-set-key              (kbd "C-z")        nil)))
 
 (defun spotlight ()
 	(interactive)
