@@ -104,21 +104,28 @@
 (setq org-treat-S-cursor-todo-selection-as-state-change nil)
 
 ; Tags with fast selection keys
-(setq org-tag-alist (quote ((:startgroup)    ;; mutually exclusive - must be done at certain location
+(setq org-tag-alist (quote ((:startgroup)    ;; group of mutually exclusive - must be done at certain location
                             ("@home"   . ?h)
                             ("@work"   . ?b)
                             ("@out"    . ?o)
                             (:endgroup)
 														("@computer" . ?c)
+														("dotnet"    . ?#)
+														("ruby"      . ?r)
+														("emacs"     . ?e)
+														("git"       . ?g)
+														("conf"      . ?.)
+														("code"      . ?{)
                             ("PERSONAL"  . ?P)
                             ("WORK"      . ?W)
                             ("MARK"      . ?M)
-                            ("NOTE"      . ?n)
+                            ("FLAGGED"  . ??)
+														("NOTE"      . ?n) ;; starting from here, used elsewhere in config
 														("PHONE"     . ?p)
-														("WAITING"   . ?W)
-                            ("HOLD"      . ?H)
-                            ("CANCELLED" . ?C)
-                            ("FLAGGED"  . ??))))
+														("WAITING"   . ?W) ;; set from todo state change triggers..
+                            ("HOLD"      . ?H) ;; ..
+                            ("CANCELLED" . ?C) ;; .. these.
+														)))
 
 ; Allow setting single tags without the menu
 (setq org-fast-tag-selection-single-key (quote expert))
