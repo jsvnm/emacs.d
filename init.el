@@ -69,11 +69,13 @@
 (electric-pair-mode   0)
 (show-paren-mode      1)
 
+(load-library (emacs.d "lisp/misc-cmds.el"))
+
 ;; load&init cedet if found in ~/.emacs.d/cedet, otherwise let el-get try
 (let ((lib (emacs.d "cedet/cedet-devel-load.el")))
-	(or (and (file-exists-p lib)
-					 (load-file     lib)
-					 (load-file (emacs.d "el-get-init/init-cedet.el")))
+	(or (and (file-exists-p     lib)
+					 (load-load-library lib)
+					 (load-load-library (emacs.d "el-get-init/init-cedet.el")))
 			(add-to-list 'my-package-list '(cedet))))
 
 ;; require or install el-get
@@ -144,29 +146,6 @@
 					 (define-key global-map       (kbd "H-V")        'ns-paste-secondary))
 			(window-system
 			     (global-set-key              (kbd "C-z")        nil)))
-
-(defun spotlight ()
-	(interactive)
-	(let ((locate-command "mdfind"))
-		(call-interactively 'locate nil)))
-
-(defun current-file? ()
-	(interactive)
-	(let ((bfn (buffer-file-name)))
-		(message (if bfn (kill-new bfn)
-							 "No file in buffer!!!"))))
-
-(defun describe-keymap (kmap)
-	(interactive (list (completing-read "Keymap: " obarray
-		 (lambda (sym) (or (keymapp sym)
-											  (and (boundp sym)
-														 (keymapp (eval sym)))
-											 )))))
-	(help-setup-xref (list #'describe-keymap kmap) (called-interactively-p 'interactive))
-	(with-help-window (help-buffer)
-		(princ (substitute-command-keys
-						(format "description of variable %s\n\\{%s}" kmap kmap)))
-		(help-make-xrefs (help-buffer))))
 
 (load custom-file)
 (server-start)
