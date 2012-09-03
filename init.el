@@ -60,7 +60,6 @@
 (put 'downcase-region  'disabled   nil)
 (put 'narrow-to-region 'disabled   nil)
 
-
 (tool-bar-mode        0)
 (scroll-bar-mode      0)
 (blink-cursor-mode    1)
@@ -68,6 +67,9 @@
 (column-number-mode   1)
 (electric-pair-mode   0)
 (show-paren-mode      1)
+
+(set-face-foreground 'default "white")
+(set-face-background 'default "black")
 
 (load-library (emacs.d "lisp/misc-cmds.el"))
 
