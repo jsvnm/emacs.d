@@ -76,7 +76,7 @@
 	(or (and (file-exists-p     lib)
 					 (load-load-library lib)
 					 (load-load-library (emacs.d "el-get-init/init-cedet.el")))
-			(add-to-list 'my-package-list '(cedet))))
+			(add-to-list 'my-package-list 'cedet)))
 
 ;; require or install el-get
 (setq el-get-user-package-directory (emacs.d "el-get-init"))
