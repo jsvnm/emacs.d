@@ -122,6 +122,8 @@
       mac-command-modifier       'hyper)
 (windmove-default-keybindings 'shift)
 
+(find-function-setup-keys)
+
 (define-key global-map                  (kbd "RET")        'newline-and-indent)
 (define-key global-map                  (kbd "C-x u")      'revert-buffer)
 (define-key global-map                  (kbd "H-k")        'bury-buffer)
