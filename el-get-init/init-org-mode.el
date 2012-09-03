@@ -103,6 +103,29 @@
 ;; to fix state skipping normal processing with S-<arrows>
 (setq org-treat-S-cursor-todo-selection-as-state-change nil)
 
+; Tags with fast selection keys
+(setq org-tag-alist (quote ((:startgroup)    ;; mutually exclusive - must be done at certain location
+                            ("@home"   . ?h)
+                            ("@work"   . ?b)
+                            ("@out"    . ?o)
+                            (:endgroup)
+														("@computer" . ?c)
+                            ("PERSONAL"  . ?P)
+                            ("WORK"      . ?W)
+                            ("MARK"      . ?M)
+                            ("NOTE"      . ?n)
+														("PHONE"     . ?p)
+														("WAITING"   . ?W)
+                            ("HOLD"      . ?H)
+                            ("CANCELLED" . ?C)
+                            ("FLAGGED"  . ??))))
+
+; Allow setting single tags without the menu
+(setq org-fast-tag-selection-single-key (quote expert))
+
+; For tag searches ignore tasks with scheduled and deadline dates
+(setq org-agenda-tags-todo-honor-ignore-options t)
+
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, and org-protocol
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "")
