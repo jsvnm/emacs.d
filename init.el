@@ -73,18 +73,20 @@
 
 (load-library (emacs.d "lisp/misc-cmds.el"))
 
+;; el-get autoloads from here
+(setq el-get-user-package-directory (emacs.d "init.d"))
+
 ;; load&init cedet if found in ~/.emacs.d/cedet, otherwise let el-get try
 (let ((lib (emacs.d "cedet/cedet-devel-load.el")))
 	(or (and (file-exists-p     lib)
 					 (load-library lib)
-					 (load-library (emacs.d "el-get-init/init-cedet.el")))
+					 (load-library (concat el-get-user-package-directory "/init-cedet.el")))
 			(add-to-list 'my-package-list 'cedet)))
 
 ;; require or install el-get
-(setq el-get-user-package-directory (emacs.d "el-get-init"))
 (add-to-list 'load-path (emacs.d "el-get/el-get"))
 (eval-after-load 'el-get-recipes
-	'(add-to-list 'el-get-recipe-path (emacs.d "el-get-recipes")))
+	'(add-to-list 'el-get-recipe-path (emacs.d "recipes")))
 (unless (require 'el-get nil t)
   (url-retrieve "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
    (lambda (s) (let (el-get-master-branch)
