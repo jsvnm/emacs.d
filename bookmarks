@@ -2,14 +2,19 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("org-refile-last-stored"
- (filename . "~/org/org-mode.org")
- (front-context-string . "*** TODO org-sto")
- (rear-context-string . "file-to-front]]\n")
- (position . 8003))
+(("org-capture-last-stored-marker"
+ (filename . "~/org/journal.org")
+ (front-context-string . "* pizzansyonti!\n")
+ (rear-context-string . "9-04 Tue 00:06]\n")
+ (position . 1113))
+("org-refile-last-stored"
+ (filename . "~/org/elisp.org")
+ (front-context-string . "** TODO Review [")
+ (rear-context-string . "9-03 Mon 23:42]\n")
+ (position . 1230))
 ("org-capture-last-stored"
  (filename . "~/org/notes.org")
- (front-context-string . "* TODO find-func")
- (rear-context-string . "@{2012-09-02}]]\n")
- (position . 131))
+ (front-context-string . "* TODO Review [[")
+ (rear-context-string . "9-03 Mon 23:42]\n")
+ (position . 67))
 )
