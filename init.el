@@ -146,12 +146,18 @@
 			((eq window-system 'ns)
 			     (define-key global-map       (kbd "H-z")        'undo)
 					 (define-key global-map       (kbd "H-Z")        'redo)
+					 (define-key global-map       (kbd "C-z")         nil)
 					 (define-key global-map       (kbd "H-x")        'kill-region)
 					 (define-key global-map       (kbd "H-c")        'ns-copy-including-secondary)
 					 (define-key global-map       (kbd "H-v")        'yank)
 					 (define-key global-map       (kbd "H-V")        'ns-paste-secondary))
 			(window-system
 			     (global-set-key              (kbd "C-z")        nil)))
+
+(defadvice ido-complete-space (around restrict-instead-of-complete compile activate)
+	"Make `ido-complete-space' do `ido-restrict-to-matches' when it would complete."
+	(flet ((ido-complete () (ido-restrict-to-matches)))
+		ad-do-it))
 
 (load custom-file)
 (server-start)
