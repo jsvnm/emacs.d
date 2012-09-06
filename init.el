@@ -10,7 +10,8 @@
 				flymake-ruby emacs-pry
 				cmake-mode csharp-mode
 				haskell-mode haskell-mode-exts 
-				org-mode org-link-minor-mode))
+				org-mode org-link-minor-mode org-redmine
+				auto-install))
 
 (setq-default
       tab-width                    2

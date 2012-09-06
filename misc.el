@@ -104,3 +104,10 @@ when called interactively:
 		(list b a))))
 (funcall lll)
 		
+
+(defun fileset-from-git-ls-files (name &optional path)
+	(let* ((default-directory (or (and path
+																		(file-name-directory path))
+															 default-directory))
+				 (files (split-string (shell-command-to-string "git ls-files"))))
+		files))
