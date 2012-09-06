@@ -20,18 +20,9 @@
 (org-redmine-load-confs)
 (org-redmine-select-conf (car org-redmine-conf-list))
 
-(org-redmine-get-issue 1)
 
-
-(org-redmine-curl-get
- (format "%s/projects.json" org-redmine-uri))
-
-
-(orutil-gethash trs "trackers" )
-
-(when nil
-	;; DISABLED
 (defun redmine-json-issue (project_id subject &rest args)
+	"For creating a new issue"
 	(let (o)
 		(setq o (json-add-to-object o "project_id" project_id))
 		(setq o (json-add-to-object o "subject" subject))
@@ -67,29 +58,21 @@
     (append
      args
      (cond (org-redmine-auth-api-key
-            `("-G" "-d" ,(format "key=%s" org-redmine-auth-api-key)))
+						`("-H" ,(format "X-Redmine-API-Key: %s" org-redmine-auth-api-key)))
            (org-redmine-auth-username
-            `("-u"
-              ,(format "%s:%s"
-                       org-redmine-auth-username (or org-redmine-auth-password ""))))
+            `("-u" ,(format "%s:%s" org-redmine-auth-username (or org-redmine-auth-password ""))))
            (org-redmine-auth-netrc-use '("--netrc"))
            (t ""))
 		 (and data
-					`("-d" ,(format "%s" data)))
+					`("-H" "Content-Type: application/json"
+						"-d" ,(format "%s" data)))
      `(,uri))))
 
 
 (defun org-redmine-create-issue (project_id subject &rest args)
-	(let ((is (redmine-json-issue (project_id subject args))))
-		(org-redmine-curl-args-for
-		 (format "%s/issues.json" org-redmine-uri) "POST" (json-encode is))
-("-X" "POST" "-s" "-f" "-G" "-d" "key=326c8c77d61e683b428ac03fbebf3e8b2a959477" "-d" "{\"issue\":{\"subject\":\"laillai\", \"project_id\":1}}" "http://localhost:3000/issues.json")		
-		))
-
-(setq is (redmine-json-issue 1 "laillai"))
-(json-encode '((description . "aika paaska muttei silti hyva") (subject . "paskaksvaa") (project_id . 1)))
+	"Create new issue in PROJECT_ID with SUBJECT, ARGS is KEY VALUE pairs for issue"
+	(org-redmine-curl (format "%s/issues.json" org-redmine-uri) "POST"
+									(json-encode
+									 (apply 'redmine-json-issue project_id subject args))))
 
 
-;; curl -v -H "Content-Type: application/json" -X POST --data "{\"issue\":{\"subject\":\"laillai\", \"project_id\":\"1\"}}" -H "X-Redmine-API-Key: <key>" "http://localhost:3000/issues.json"
-;; onnistu
-)
