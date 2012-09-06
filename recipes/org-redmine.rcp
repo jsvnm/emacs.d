@@ -1,5 +1,0 @@
-(:name org-redmine
-			 :description "Redmine tools using Emacs OrgMode"
-			 :type github
-			 :pkgname "gongo/org-redmine"
-			 :features org-redmine)

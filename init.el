@@ -10,7 +10,7 @@
 				flymake-ruby emacs-pry
 				cmake-mode csharp-mode
 				haskell-mode haskell-mode-exts 
-				org-mode org-link-minor-mode org-redmine
+				org-mode org-link-minor-mode ;org-redmine
 				auto-install))
 
 (setq-default
@@ -95,6 +95,23 @@
   (url-retrieve "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
    (lambda (s) (let (el-get-master-branch)
     (goto-char (point-max)) (eval-print-last-sexp)))))
+
+(setq el-get-sources
+'((:name emacs-pry
+	 :description "support for running Pry within in Emacs"
+	 :type github
+	 :pkgname "jacott/emacs-pry"
+	 :features pry)
+	(:name org-redmine
+	 :description "Redmine tools using Emacs OrgMode"
+	 :type github
+	 :pkgname "gongo/org-redmine"
+	 :depends anything
+	 :features org-redmine)
+	(:name org-link-minor-mode
+	 :description "Enable org-mode bracket links in non-org modes"
+	 :type github
+	 :pkgname "seanohalpin/org-link-minor-mode")))
 
 ;; install/init everything 
 (el-get 'sync my-package-list)
