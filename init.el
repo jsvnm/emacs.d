@@ -74,6 +74,7 @@
 (set-face-foreground 'default "white")
 (set-face-background 'default "black")
 
+(load-library (emacs.d "lisp/misc-fns.el"))
 (load-library (emacs.d "lisp/misc-cmds.el"))
 
 ;; el-get autoloads from here
