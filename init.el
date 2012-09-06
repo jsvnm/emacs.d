@@ -50,12 +50,14 @@
 (setq auto-save-file-name-transforms  `((".*" ,temporary-file-directory t)))
 (setq auto-save-list-file-prefix  (emacs.d "cache/auto-save-list/.saves-"))
 (setq tramp-persistency-file-name (emacs.d "cache/tramp-history"))
+(setq url-cookie-file        (emacs.d "cache/url/cookies"))
 (setq ac-comphist-file       (emacs.d "cache/ac-comphist.dat"))
 (setq org-clock-persist-file (emacs.d "cache/org-clock-save.el"))
 (setq srecode-map-save-file  (emacs.d "cache/srecode-map.el"))
 (setq semanticdb-default-save-directory  (emacs.d "cache/semanticdb"))
 (setq ede-project-placeholder-cache-file (emacs.d "cache/ede-projects.el"))
 
+			
 (fset 'yes-or-no-p 'y-or-n-p)
 (put 'upcase-region    'disabled   nil)
 (put 'downcase-region  'disabled   nil)
