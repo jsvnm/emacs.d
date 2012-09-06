@@ -111,3 +111,14 @@ when called interactively:
 															 default-directory))
 				 (files (split-string (shell-command-to-string "git ls-files"))))
 		files))
+
+(defun ordinary-insertion-filter (proc string)
+	(when (buffer-live-p (process-buffer proc))
+		(with-current-buffer (process-buffer proc)
+			(let ((moving (= (point) (process-mark proc))))
+				(save-excursion
+					;; Insert the text, advancing the process marker.
+					(goto-char (process-mark proc))
+					(insert string)
+					(set-marker (process-mark proc) (point)))
+				(if moving (goto-char (process-mark proc)))))))
