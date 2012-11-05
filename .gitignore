@@ -1,6 +1,10 @@
-cache/
-eshell/
-el-get/
-cedet/
-org-mode/
+.DS_Store
 *.elc
+*~
+/cache/
+/eshell/
+/el-get/
+/cedet/
+/org-mode/
+/server/
+/url/
